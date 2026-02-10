@@ -10,7 +10,7 @@
     "version": "1.5.2"
   },
   "payload": {
-    "commitment_id": "ri-2023-standard-m5",
+    "commitment_id": "550e8400-e29b-41d4-a716-446655440093",
     "commitment_type": "reserved_instance",
     "issue_type": "low_utilization",
     "provider": "aws",
@@ -27,7 +27,7 @@
     "wasted_amount": 8625.00,
     "potential_savings": 8625.00,
     "currency": "USD",
-    "recommendation_id": "850e8400-e29b-41d4-a716-446655440009"
+    "recommendation_id": "550e8400-e29b-41d4-a716-446655440092"
   },
   "metadata": {
     "priority": "high",

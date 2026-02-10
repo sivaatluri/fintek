@@ -3,7 +3,7 @@
   "event_type": "budget.threshold_exceeded",
   "event_version": "1.0.0",
   "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-  "correlation_id": "corr-2024-02-01-budget-alert",
+  "correlation_id": "550e8400-e29b-41d4-a716-446655440097",
   "timestamp": "2024-02-01T14:30:00Z",
   "source": {
     "service": "budgets-alerts-service",
@@ -11,7 +11,7 @@
     "version": "2.1.0"
   },
   "payload": {
-    "budget_id": "budget-eng-monthly",
+    "budget_id": "550e8400-e29b-41d4-a716-446655440096",
     "budget_name": "Engineering Monthly Budget",
     "period": "monthly",
     "threshold_type": "percentage",

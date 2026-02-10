@@ -1,6 +1,6 @@
 {
   "execution_id": "d50e8400-e29b-41d4-a716-446655440010",
-  "workflow_id": "wf-budget-alert-notification",
+  "workflow_id": "550e8400-e29b-41d4-a716-446655440091",
   "workflow_name": "Budget Alert Notification Workflow",
   "workflow_version": "1.2.0",
   "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
@@ -104,7 +104,7 @@
   ],
   "actions_taken": [
     {
-      "action_id": "act-email-001",
+      "action_id": "550e8400-e29b-41d4-a716-446655440090",
       "action_type": "email",
       "status": "success",
       "executed_at": "2024-02-01T14:30:08Z",
@@ -114,7 +114,7 @@
       }
     },
     {
-      "action_id": "act-slack-001",
+      "action_id": "550e8400-e29b-41d4-a716-446655440089",
       "action_type": "slack",
       "status": "success",
       "executed_at": "2024-02-01T14:30:10Z",
@@ -124,7 +124,7 @@
       }
     },
     {
-      "action_id": "act-jira-001",
+      "action_id": "550e8400-e29b-41d4-a716-446655440088",
       "action_type": "jira",
       "status": "success",
       "executed_at": "2024-02-01T14:30:12Z",

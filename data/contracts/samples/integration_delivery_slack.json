@@ -4,7 +4,7 @@
   "workflow_execution_id": "d50e8400-e29b-41d4-a716-446655440010",
   "event_id": "950e8400-e29b-41d4-a716-446655440005",
   "integration_type": "slack",
-  "integration_id": "int-slack-budget-alerts",
+  "integration_id": "550e8400-e29b-41d4-a716-446655440087",
   "integration_name": "Budget Alerts Slack Channel",
   "status": "delivered",
   "delivery_method": "asynchronous",

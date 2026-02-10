@@ -36,7 +36,7 @@
     "status": "approved"
   },
   "allocation_rules_applied": [
-    "rule-2024-01-proportional"
+    "550e8400-e29b-41d4-a716-446655440098"
   ],
   "allocated_at": "2024-02-01T09:00:00Z",
   "metadata": {

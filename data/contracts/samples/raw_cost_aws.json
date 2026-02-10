@@ -34,7 +34,7 @@
   "checksum": "d41d8cd98f00b204e9800998ecf8427e",
   "metadata": {
     "connector_version": "1.2.3",
-    "ingestion_job_id": "job-2024-02-01-083000",
+    "ingestion_job_id": "550e8400-e29b-41d4-a716-446655440099",
     "data_quality_flags": []
   }
 }
