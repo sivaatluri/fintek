@@ -1,0 +1,35 @@
+# Code Owners
+
+# Global owners
+* @sivaatluri
+
+# Documentation
+/docs/ @sivaatluri
+*.md @sivaatluri
+
+# Infrastructure
+/infra/ @sivaatluri
+/docker-compose*.yml @sivaatluri
+/Makefile @sivaatluri
+
+# Packages
+/packages/ @sivaatluri
+
+# Services
+/services/ @sivaatluri
+
+# Applications
+/apps/ @sivaatluri
+
+# Data & Schemas
+/data/ @sivaatluri
+
+# Tests
+/tests/ @sivaatluri
+
+# Scripts
+/scripts/ @sivaatluri
+
+# Security-sensitive files
+/SECURITY.md @sivaatluri
+/.github/workflows/ @sivaatluri

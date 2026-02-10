@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/normalized_cost.schema.json",
+  "title": "Normalized Cost Record",
+  "description": "Canonical cost record schema for all cloud providers",
+  "type": "object",
+  "required": [
+    "tenant_id",
+    "provider",
+    "account_id",
+    "service",
+    "usage_date",
+    "cost",
+    "currency"
+  ],
+  "properties": {
+    "tenant_id": {
+      "type": "string",
+      "description": "Tenant identifier"
+    },
+    "provider": {
+      "type": "string",
+      "enum": ["aws", "azure", "gcp", "oracle", "akamai", "datacenter"],
+      "description": "Cloud provider"
+    },
+    "account_id": {
+      "type": "string",
+      "description": "Cloud account/subscription ID"
+    },
+    "account_name": {
+      "type": "string",
+      "description": "Human-readable account name"
+    },
+    "service": {
+      "type": "string",
+      "description": "Normalized service name (e.g., 'compute', 'storage', 'network')"
+    },
+    "service_native": {
+      "type": "string",
+      "description": "Provider-native service name (e.g., 'Amazon EC2', 'Virtual Machines')"
+    },
+    "region": {
+      "type": "string",
+      "description": "Normalized region (e.g., 'us-east-1')"
+    },
+    "region_native": {
+      "type": "string",
+      "description": "Provider-native region name"
+    },
+    "usage_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of usage (YYYY-MM-DD)"
+    },
+    "usage_start": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Start timestamp of usage period"
+    },
+    "usage_end": {
+      "type": "string",
+      "format": "date-time",
+      "description": "End timestamp of usage period"
+    },
+    "resource_id": {
+      "type": "string",
+      "description": "Unique resource identifier"
+    },
+    "resource_name": {
+      "type": "string",
+      "description": "Resource name or description"
+    },
+    "resource_type": {
+      "type": "string",
+      "description": "Normalized resource type"
+    },
+    "usage_type": {
+      "type": "string",
+      "description": "Type of usage (e.g., 'BoxUsage', 'DataTransfer')"
+    },
+    "usage_amount": {
+      "type": "number",
+      "description": "Amount of resource used"
+    },
+    "usage_unit": {
+      "type": "string",
+      "description": "Unit of measurement (e.g., 'GB', 'Hours', 'Requests')"
+    },
+    "cost": {
+      "type": "number",
+      "description": "Total cost in specified currency"
+    },
+    "cost_unblended": {
+      "type": "number",
+      "description": "Unblended cost (actual cost before discounts)"
+    },
+    "cost_amortized": {
+      "type": "number",
+      "description": "Amortized cost (including upfront fees)"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 currency code"
+    },
+    "pricing_unit": {
+      "type": "string",
+      "description": "Pricing unit (e.g., 'per GB-Month')"
+    },
+    "pricing_rate": {
+      "type": "number",
+      "description": "Rate per pricing unit"
+    },
+    "tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Native tags/labels from provider"
+    },
+    "virtual_tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Tags applied by virtual tagging rules"
+    },
+    "commitment_id": {
+      "type": "string",
+      "description": "RI/SP/CUD identifier if applicable"
+    },
+    "commitment_type": {
+      "type": "string",
+      "enum": ["reserved_instance", "savings_plan", "committed_use_discount", "none"],
+      "description": "Type of commitment discount"
+    },
+    "charge_type": {
+      "type": "string",
+      "enum": ["usage", "purchase", "refund", "credit", "tax", "fee"],
+      "description": "Type of charge"
+    },
+    "invoice_id": {
+      "type": "string",
+      "description": "Invoice identifier"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata",
+      "properties": {
+        "ingestion_timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "normalization_version": {
+          "type": "string"
+        },
+        "source_file": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

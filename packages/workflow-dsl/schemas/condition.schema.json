@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/condition.schema.json",
+  "title": "Condition",
+  "description": "A condition to evaluate before executing actions",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["threshold", "comparison", "regex", "script"],
+      "description": "Type of condition"
+    },
+    "field": {
+      "type": "string",
+      "description": "Field to evaluate (dot notation supported)"
+    },
+    "operator": {
+      "type": "string",
+      "enum": ["gt", "gte", "lt", "lte", "eq", "ne", "in", "not_in", "contains", "matches"],
+      "description": "Comparison operator"
+    },
+    "value": {
+      "description": "Value to compare against"
+    },
+    "script": {
+      "type": "string",
+      "description": "CEL or Rego expression for complex conditions"
+    },
+    "and": {
+      "type": "array",
+      "description": "Logical AND of conditions",
+      "items": {
+        "$ref": "#"
+      }
+    },
+    "or": {
+      "type": "array",
+      "description": "Logical OR of conditions",
+      "items": {
+        "$ref": "#"
+      }
+    }
+  }
+}

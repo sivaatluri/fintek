@@ -1,0 +1,59 @@
+# Budget Threshold Alert Workflow
+
+id: budget-threshold-alert
+name: Budget Threshold Alert
+description: Alert when budget threshold is exceeded
+enabled: true
+tenant_id: ${tenant_id}
+
+trigger:
+  event_type: budget.threshold_exceeded
+
+conditions:
+  - type: threshold
+    field: event.data.percentage
+    operator: gte
+    value: 80
+
+actions:
+  - type: slack.message
+    config:
+      channel: "#finops-alerts"
+    template: |
+      🚨 Budget Alert: {{ event.data.budget_name }}
+      
+      Current Spend: ${{ event.data.current_amount | number_format }}
+      Budget: ${{ event.data.budget_amount | number_format }}
+      Percentage: {{ event.data.percentage }}%
+      
+      Period: {{ event.data.period_start }} to {{ event.data.period_end }}
+      
+      <{{ event.data.dashboard_url }}|View Dashboard>
+
+  - type: email.send
+    config:
+      to:
+        - finops-team@example.com
+      subject: Budget Alert: {{ event.data.budget_name }}
+    template: |
+      Your budget "{{ event.data.budget_name }}" has exceeded {{ event.data.percentage }}% of its limit.
+      
+      Current Spend: ${{ event.data.current_amount }}
+      Budget: ${{ event.data.budget_amount }}
+      Remaining: ${{ event.data.remaining_amount }}
+      
+      Please review your spending in the dashboard:
+      {{ event.data.dashboard_url }}
+
+idempotency:
+  key: "budget-alert-{{ event.data.budget_id }}-{{ event.data.period_start }}"
+  cooldown: 3600  # 1 hour
+
+escalation:
+  enabled: true
+  delay: 7200  # 2 hours
+  actions:
+    - type: pagerduty.create_alert
+      config:
+        severity: high
+        summary: Budget {{ event.data.budget_name }} exceeded threshold
