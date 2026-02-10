@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+- Updated Next.js from 14.0.0 to 15.0.8 to fix DoS vulnerability in HTTP request deserialization (CVE-2024-XXXX)
+- Updated aiohttp from 3.9.1 to 3.13.3 to fix zip bomb vulnerability, directory traversal, and malformed POST DoS
+- Updated fastapi from 0.104.1 to 0.109.1 to fix Content-Type Header ReDoS vulnerability
+
 ### Added
 - Initial monorepo structure
 - Core service architecture
