@@ -1,0 +1,131 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/workflow.schema.json",
+  "title": "Workflow",
+  "description": "A workflow defines event triggers, conditions, and actions",
+  "type": "object",
+  "required": ["id", "name", "trigger", "actions"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique workflow identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable workflow name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Workflow description"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the workflow is active"
+    },
+    "tenant_id": {
+      "type": "string",
+      "description": "Tenant this workflow belongs to"
+    },
+    "trigger": {
+      "type": "object",
+      "description": "Event that triggers this workflow",
+      "required": ["event_type"],
+      "properties": {
+        "event_type": {
+          "type": "string",
+          "enum": [
+            "budget.threshold_exceeded",
+            "budget.threshold_warning",
+            "forecast.exceeds_budget",
+            "anomaly.cost_spike",
+            "anomaly.usage_spike",
+            "recommendation.created",
+            "commitment.expiring",
+            "commitment.low_utilization",
+            "schedule.cron"
+          ]
+        },
+        "schedule": {
+          "type": "string",
+          "description": "Cron expression for scheduled workflows",
+          "pattern": "^(@(annually|yearly|monthly|weekly|daily|hourly))|(((\\d+,)+\\d+|(\\d+([/-])\\d+)|\\d+|\\*) ?){5,7}$"
+        }
+      }
+    },
+    "conditions": {
+      "type": "array",
+      "description": "Conditions that must be met for actions to execute",
+      "items": {
+        "$ref": "condition.schema.json"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "description": "Actions to execute when conditions are met",
+      "minItems": 1,
+      "items": {
+        "$ref": "action.schema.json"
+      }
+    },
+    "idempotency": {
+      "type": "object",
+      "description": "Idempotency settings",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Template for generating idempotency key"
+        },
+        "cooldown": {
+          "type": "integer",
+          "description": "Cooldown period in seconds before re-triggering",
+          "minimum": 0
+        }
+      }
+    },
+    "escalation": {
+      "type": "object",
+      "description": "Escalation rules",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "delay": {
+          "type": "integer",
+          "description": "Delay in seconds before escalating",
+          "minimum": 0
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "action.schema.json"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

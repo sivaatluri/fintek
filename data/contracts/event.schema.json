@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/event.schema.json",
+  "title": "Event",
+  "description": "Event envelope for workflow triggers",
+  "type": "object",
+  "required": ["id", "type", "tenant_id", "timestamp", "data"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique event identifier"
+    },
+    "type": {
+      "type": "string",
+      "description": "Event type (e.g., 'budget.threshold_exceeded')"
+    },
+    "tenant_id": {
+      "type": "string",
+      "description": "Tenant identifier"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event timestamp"
+    },
+    "source": {
+      "type": "string",
+      "description": "Service that generated the event"
+    },
+    "correlation_id": {
+      "type": "string",
+      "description": "Correlation ID for tracking related events"
+    },
+    "data": {
+      "type": "object",
+      "description": "Event-specific payload"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "trace_id": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

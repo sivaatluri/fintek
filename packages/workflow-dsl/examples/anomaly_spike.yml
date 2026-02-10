@@ -1,0 +1,78 @@
+# Anomaly Spike Detection Workflow
+
+id: anomaly-spike-detection
+name: Cost Anomaly Detection
+description: Detect and alert on unexpected cost spikes
+enabled: true
+tenant_id: ${tenant_id}
+
+trigger:
+  event_type: anomaly.cost_spike
+
+conditions:
+  - type: comparison
+    field: event.data.deviation_percentage
+    operator: gt
+    value: 50
+  - type: comparison
+    field: event.data.anomaly_score
+    operator: gte
+    value: 0.8
+
+actions:
+  - type: slack.message
+    config:
+      channel: "#finops-anomalies"
+    template: |
+      ⚠️ Cost Anomaly Detected
+      
+      Service: {{ event.data.service }}
+      Region: {{ event.data.region }}
+      Account: {{ event.data.account_name }}
+      
+      Expected Cost: ${{ event.data.expected_cost | number_format }}
+      Actual Cost: ${{ event.data.actual_cost | number_format }}
+      Deviation: +{{ event.data.deviation_percentage }}%
+      
+      Anomaly Score: {{ event.data.anomaly_score }}
+      Detection Time: {{ event.data.detected_at | date }}
+      
+      <{{ event.data.investigation_url }}|Investigate>
+
+  - type: jira.create_issue
+    config:
+      project: FINOPS
+      issue_type: Task
+      priority: High
+    template: |
+      {
+        "summary": "Investigate cost anomaly in {{ event.data.service }}",
+        "description": "Detected {{ event.data.deviation_percentage }}% cost increase in {{ event.data.service }}.\n\nExpected: ${{ event.data.expected_cost }}\nActual: ${{ event.data.actual_cost }}\n\nInvestigate: {{ event.data.investigation_url }}",
+        "labels": ["cost-anomaly", "auto-generated"]
+      }
+
+idempotency:
+  key: "anomaly-{{ event.data.service }}-{{ event.data.region }}-{{ event.data.date }}"
+  cooldown: 86400  # 24 hours
+
+escalation:
+  enabled: true
+  delay: 14400  # 4 hours
+  actions:
+    - type: email.send
+      config:
+        to:
+          - finance-lead@example.com
+          - engineering-lead@example.com
+      subject: "[Action Required] Cost Anomaly in {{ event.data.service }}"
+      template: |
+        A cost anomaly has been detected and requires investigation.
+        
+        Details:
+        - Service: {{ event.data.service }}
+        - Deviation: +{{ event.data.deviation_percentage }}%
+        - Additional Cost: ${{ event.data.additional_cost }}
+        
+        A Jira ticket has been created but no action has been taken in 4 hours.
+        
+        Please investigate immediately: {{ event.data.investigation_url }}

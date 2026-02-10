@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/action.schema.json",
+  "title": "Action",
+  "description": "An action to execute in a workflow",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "slack.message",
+        "teams.message",
+        "email.send",
+        "jira.create_issue",
+        "servicenow.create_incident",
+        "pagerduty.create_alert",
+        "webhook.post",
+        "api.call"
+      ],
+      "description": "Type of action"
+    },
+    "config": {
+      "type": "object",
+      "description": "Action-specific configuration",
+      "properties": {
+        "channel": {
+          "type": "string",
+          "description": "Slack/Teams channel"
+        },
+        "to": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Email recipients"
+        },
+        "project": {
+          "type": "string",
+          "description": "Jira project key"
+        },
+        "issue_type": {
+          "type": "string",
+          "description": "Jira issue type"
+        },
+        "priority": {
+          "type": "string",
+          "description": "Priority level"
+        },
+        "url": {
+          "type": "string",
+          "description": "Webhook URL"
+        },
+        "method": {
+          "type": "string",
+          "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"],
+          "description": "HTTP method"
+        },
+        "headers": {
+          "type": "object",
+          "description": "HTTP headers"
+        },
+        "body": {
+          "type": "string",
+          "description": "Request body template"
+        }
+      }
+    },
+    "template": {
+      "type": "string",
+      "description": "Message template with variables"
+    },
+    "retry": {
+      "type": "object",
+      "description": "Retry configuration",
+      "properties": {
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 3
+        },
+        "backoff": {
+          "type": "string",
+          "enum": ["fixed", "exponential"],
+          "default": "exponential"
+        },
+        "delay": {
+          "type": "integer",
+          "description": "Initial delay in seconds",
+          "minimum": 1,
+          "default": 5
+        }
+      }
+    }
+  }
+}
