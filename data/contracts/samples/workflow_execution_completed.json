@@ -1,0 +1,146 @@
+{
+  "execution_id": "d50e8400-e29b-41d4-a716-446655440010",
+  "workflow_id": "wf-budget-alert-notification",
+  "workflow_name": "Budget Alert Notification Workflow",
+  "workflow_version": "1.2.0",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "trigger": {
+    "type": "event",
+    "event_id": "950e8400-e29b-41d4-a716-446655440005"
+  },
+  "status": "completed",
+  "started_at": "2024-02-01T14:30:05Z",
+  "completed_at": "2024-02-01T14:30:12Z",
+  "duration_ms": 7000,
+  "input": {
+    "event_type": "budget.threshold_exceeded",
+    "budget_name": "Engineering Monthly Budget",
+    "current_spend": 45600.00,
+    "budget_amount": 50000.00
+  },
+  "output": {
+    "notifications_sent": 2,
+    "tickets_created": 1,
+    "success": true
+  },
+  "context": {
+    "tenant_name": "Acme Corp",
+    "notification_channels": ["email", "slack"],
+    "escalation_level": 1
+  },
+  "steps": [
+    {
+      "step_id": "check-threshold",
+      "step_name": "Check Budget Threshold",
+      "step_type": "condition",
+      "status": "completed",
+      "started_at": "2024-02-01T14:30:05Z",
+      "completed_at": "2024-02-01T14:30:05.100Z",
+      "duration_ms": 100,
+      "input": {
+        "threshold_percentage": 90,
+        "current_percentage": 91.2
+      },
+      "output": {
+        "condition_met": true
+      },
+      "retry_count": 0
+    },
+    {
+      "step_id": "send-email",
+      "step_name": "Send Email Notification",
+      "step_type": "action",
+      "status": "completed",
+      "started_at": "2024-02-01T14:30:06Z",
+      "completed_at": "2024-02-01T14:30:08Z",
+      "duration_ms": 2000,
+      "input": {
+        "recipients": ["finance-team@example.com", "engineering-lead@example.com"],
+        "template": "budget_alert"
+      },
+      "output": {
+        "message_id": "msg-123456",
+        "status": "sent"
+      },
+      "retry_count": 0
+    },
+    {
+      "step_id": "post-slack",
+      "step_name": "Post to Slack",
+      "step_type": "action",
+      "status": "completed",
+      "started_at": "2024-02-01T14:30:08Z",
+      "completed_at": "2024-02-01T14:30:10Z",
+      "duration_ms": 2000,
+      "input": {
+        "channel": "#budget-alerts",
+        "template": "budget_alert_slack"
+      },
+      "output": {
+        "message_ts": "1706797810.123456",
+        "status": "posted"
+      },
+      "retry_count": 0
+    },
+    {
+      "step_id": "create-jira-ticket",
+      "step_name": "Create Jira Ticket",
+      "step_type": "action",
+      "status": "completed",
+      "started_at": "2024-02-01T14:30:10Z",
+      "completed_at": "2024-02-01T14:30:12Z",
+      "duration_ms": 2000,
+      "input": {
+        "project": "FIN",
+        "issue_type": "Task",
+        "priority": "High"
+      },
+      "output": {
+        "ticket_id": "FIN-1234",
+        "ticket_url": "https://jira.example.com/browse/FIN-1234"
+      },
+      "retry_count": 0
+    }
+  ],
+  "actions_taken": [
+    {
+      "action_id": "act-email-001",
+      "action_type": "email",
+      "status": "success",
+      "executed_at": "2024-02-01T14:30:08Z",
+      "details": {
+        "recipients_count": 2,
+        "message_id": "msg-123456"
+      }
+    },
+    {
+      "action_id": "act-slack-001",
+      "action_type": "slack",
+      "status": "success",
+      "executed_at": "2024-02-01T14:30:10Z",
+      "details": {
+        "channel": "#budget-alerts",
+        "message_ts": "1706797810.123456"
+      }
+    },
+    {
+      "action_id": "act-jira-001",
+      "action_type": "jira",
+      "status": "success",
+      "executed_at": "2024-02-01T14:30:12Z",
+      "details": {
+        "ticket_id": "FIN-1234"
+      }
+    }
+  ],
+  "idempotency_key": "budget-alert-950e8400-20240201",
+  "cooldown_until": "2024-02-01T18:30:00Z",
+  "metadata": {
+    "tags": {
+      "workflow_type": "notification",
+      "severity": "high"
+    },
+    "priority": "high",
+    "timeout_seconds": 300
+  }
+}

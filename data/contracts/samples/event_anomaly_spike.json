@@ -1,0 +1,44 @@
+{
+  "event_id": "a50e8400-e29b-41d4-a716-446655440006",
+  "event_type": "anomaly.cost_spike",
+  "event_version": "1.0.0",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "timestamp": "2024-02-01T15:45:00Z",
+  "source": {
+    "service": "budgets-alerts-service",
+    "instance": "pod-anomaly-detector-xyz789",
+    "version": "2.1.0"
+  },
+  "payload": {
+    "anomaly_id": "anomaly-2024-02-01-spike-001",
+    "anomaly_type": "cost_spike",
+    "severity": "high",
+    "detected_at": "2024-02-01T15:45:00Z",
+    "detection_method": "machine_learning",
+    "confidence_score": 0.92,
+    "current_value": 1245.67,
+    "expected_value": 345.20,
+    "deviation_percentage": 260.8,
+    "currency": "USD",
+    "resource_id": "arn:aws:ec2:us-west-2:123456789012:instance/i-unusual123",
+    "service": "EC2",
+    "region": "us-west-2",
+    "account_id": "123456789012",
+    "time_window": {
+      "start": "2024-02-01T00:00:00Z",
+      "end": "2024-02-01T23:59:59Z"
+    },
+    "historical_baseline": {
+      "mean": 342.15,
+      "median": 345.20,
+      "std_dev": 23.45
+    }
+  },
+  "metadata": {
+    "priority": "critical",
+    "tags": {
+      "anomaly_type": "cost_spike",
+      "requires_investigation": "true"
+    }
+  }
+}

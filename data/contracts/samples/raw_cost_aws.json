@@ -1,0 +1,40 @@
+{
+  "record_id": "550e8400-e29b-41d4-a716-446655440001",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "provider": "aws",
+  "account_id": "123456789012",
+  "billing_period_start": "2024-01-01T00:00:00Z",
+  "billing_period_end": "2024-01-31T23:59:59Z",
+  "ingested_at": "2024-02-01T08:30:00Z",
+  "source_file": "s3://billing-exports/123456789012/2024-01/cost-report.csv.gz",
+  "source_line_number": 12345,
+  "raw_data": {
+    "identity/LineItemId": "abcdefgh12345",
+    "bill/InvoiceId": "INV-2024-01",
+    "lineItem/UsageAccountId": "123456789012",
+    "lineItem/LineItemType": "Usage",
+    "lineItem/UsageStartDate": "2024-01-15T10:00:00Z",
+    "lineItem/UsageEndDate": "2024-01-15T11:00:00Z",
+    "lineItem/ProductCode": "AmazonEC2",
+    "lineItem/UsageType": "BoxUsage:t3.medium",
+    "lineItem/Operation": "RunInstances",
+    "lineItem/ResourceId": "i-0123456789abcdef0",
+    "lineItem/UsageAmount": "1.0",
+    "lineItem/UnblendedRate": "0.0416",
+    "lineItem/UnblendedCost": "0.0416",
+    "lineItem/BlendedRate": "0.0416",
+    "lineItem/BlendedCost": "0.0416",
+    "product/instanceType": "t3.medium",
+    "product/region": "us-east-1",
+    "product/operatingSystem": "Linux",
+    "resourceTags/user:Environment": "production",
+    "resourceTags/user:Team": "platform",
+    "resourceTags/user:CostCenter": "engineering"
+  },
+  "checksum": "d41d8cd98f00b204e9800998ecf8427e",
+  "metadata": {
+    "connector_version": "1.2.3",
+    "ingestion_job_id": "job-2024-02-01-083000",
+    "data_quality_flags": []
+  }
+}

@@ -1,0 +1,284 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/workflow_execution.schema.json",
+  "title": "Workflow Execution Record",
+  "description": "Schema for tracking workflow execution state and history",
+  "type": "object",
+  "required": [
+    "execution_id",
+    "workflow_id",
+    "workflow_version",
+    "tenant_id",
+    "status",
+    "started_at"
+  ],
+  "properties": {
+    "execution_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this workflow execution"
+    },
+    "workflow_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifier of the workflow definition"
+    },
+    "workflow_name": {
+      "type": "string",
+      "description": "Human-readable workflow name"
+    },
+    "workflow_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Version of the workflow definition"
+    },
+    "tenant_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Tenant identifier"
+    },
+    "trigger": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["event", "schedule", "manual", "webhook"],
+          "description": "What triggered this workflow"
+        },
+        "event_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Triggering event ID (if type is 'event')"
+        },
+        "user_id": {
+          "type": "string",
+          "description": "User who triggered manually (if type is 'manual')"
+        },
+        "schedule_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Schedule that triggered (if type is 'schedule')"
+        },
+        "webhook_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Webhook that triggered (if type is 'webhook')"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "running",
+        "paused",
+        "completed",
+        "failed",
+        "cancelled",
+        "timed_out"
+      ],
+      "description": "Current execution status"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When execution started"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When execution completed"
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Execution duration in milliseconds"
+    },
+    "input": {
+      "type": "object",
+      "description": "Workflow input data",
+      "additionalProperties": true
+    },
+    "output": {
+      "type": "object",
+      "description": "Workflow output data",
+      "additionalProperties": true
+    },
+    "context": {
+      "type": "object",
+      "description": "Execution context and variables",
+      "additionalProperties": true
+    },
+    "steps": {
+      "type": "array",
+      "description": "Execution history of workflow steps",
+      "items": {
+        "type": "object",
+        "required": ["step_id", "step_name", "status", "started_at"],
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "description": "Step identifier from workflow definition"
+          },
+          "step_name": {
+            "type": "string",
+            "description": "Human-readable step name"
+          },
+          "step_type": {
+            "type": "string",
+            "enum": [
+              "condition",
+              "action",
+              "parallel",
+              "loop",
+              "wait",
+              "approval"
+            ],
+            "description": "Type of step"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "running", "completed", "failed", "skipped", "cancelled"]
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "input": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "output": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "details": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          },
+          "retry_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "actions_taken": {
+      "type": "array",
+      "description": "Actions executed during workflow",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "action_type": {
+            "type": "string",
+            "enum": [
+              "email",
+              "slack",
+              "teams",
+              "jira",
+              "servicenow",
+              "webhook",
+              "api_call",
+              "script"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["success", "failed", "skipped"]
+          },
+          "executed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "description": "Error information if execution failed",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "stack_trace": {
+          "type": "string"
+        },
+        "step_id": {
+          "type": "string",
+          "description": "Step where error occurred"
+        }
+      }
+    },
+    "idempotency_key": {
+      "type": "string",
+      "description": "Key for preventing duplicate executions"
+    },
+    "cooldown_until": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Cooldown period to prevent re-triggering"
+    },
+    "parent_execution_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Parent execution if this is a sub-workflow"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional execution metadata",
+      "properties": {
+        "tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"]
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

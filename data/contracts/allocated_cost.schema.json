@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/allocated_cost.schema.json",
+  "title": "Allocated Cost Record",
+  "description": "Cost allocation schema with unit economics and chargeback/showback",
+  "type": "object",
+  "required": [
+    "allocation_id",
+    "tenant_id",
+    "cost_id",
+    "allocation_date",
+    "allocation_method",
+    "allocated_cost",
+    "currency"
+  ],
+  "properties": {
+    "allocation_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this allocation record"
+    },
+    "tenant_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Tenant identifier"
+    },
+    "cost_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to normalized cost record"
+    },
+    "allocation_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date this allocation was calculated"
+    },
+    "allocation_method": {
+      "type": "string",
+      "enum": [
+        "direct",
+        "proportional_usage",
+        "proportional_cost",
+        "even_split",
+        "weighted",
+        "custom"
+      ],
+      "description": "Method used for allocation"
+    },
+    "allocation_basis": {
+      "type": "string",
+      "description": "Basis for allocation (e.g., 'cpu_hours', 'api_calls', 'users')"
+    },
+    "allocated_cost": {
+      "type": "number",
+      "description": "Allocated cost amount"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 currency code"
+    },
+    "allocation_targets": {
+      "type": "array",
+      "description": "Entities receiving cost allocation",
+      "items": {
+        "type": "object",
+        "required": ["target_type", "target_id", "allocation_percentage", "allocated_amount"],
+        "properties": {
+          "target_type": {
+            "type": "string",
+            "enum": [
+              "business_unit",
+              "department",
+              "team",
+              "project",
+              "product",
+              "customer",
+              "environment",
+              "application"
+            ],
+            "description": "Type of allocation target"
+          },
+          "target_id": {
+            "type": "string",
+            "description": "Identifier of the target entity"
+          },
+          "target_name": {
+            "type": "string",
+            "description": "Human-readable name"
+          },
+          "allocation_percentage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Percentage of cost allocated to this target"
+          },
+          "allocated_amount": {
+            "type": "number",
+            "description": "Actual amount allocated"
+          }
+        }
+      }
+    },
+    "unit_economics": {
+      "type": "object",
+      "description": "Unit economics calculations",
+      "properties": {
+        "unit_type": {
+          "type": "string",
+          "description": "Type of unit (e.g., 'user', 'transaction', 'api_call')"
+        },
+        "unit_count": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Number of units"
+        },
+        "cost_per_unit": {
+          "type": "number",
+          "description": "Calculated cost per unit"
+        },
+        "revenue_per_unit": {
+          "type": "number",
+          "description": "Revenue per unit (if available)"
+        },
+        "margin_per_unit": {
+          "type": "number",
+          "description": "Margin per unit (revenue - cost)"
+        }
+      }
+    },
+    "chargeback_info": {
+      "type": "object",
+      "description": "Chargeback/showback information",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["chargeback", "showback"],
+          "description": "Whether this is actual chargeback or informational showback"
+        },
+        "billing_cycle": {
+          "type": "string",
+          "description": "Billing cycle (e.g., 'monthly', 'quarterly')"
+        },
+        "invoice_id": {
+          "type": "string",
+          "description": "Associated invoice ID if in chargeback mode"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "pending_approval", "approved", "invoiced", "paid"],
+          "description": "Chargeback status"
+        }
+      }
+    },
+    "allocation_rules_applied": {
+      "type": "array",
+      "description": "IDs of allocation rules that were applied",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "allocated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when allocation was calculated"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional allocation metadata",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

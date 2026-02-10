@@ -1,0 +1,39 @@
+{
+  "event_id": "c50e8400-e29b-41d4-a716-446655440008",
+  "event_type": "commitment.utilization_low",
+  "event_version": "1.0.0",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "timestamp": "2024-02-01T17:00:00Z",
+  "source": {
+    "service": "recommendations-service",
+    "instance": "pod-commitment-monitor-789ghi",
+    "version": "1.5.2"
+  },
+  "payload": {
+    "commitment_id": "ri-2023-standard-m5",
+    "commitment_type": "reserved_instance",
+    "issue_type": "low_utilization",
+    "provider": "aws",
+    "account_id": "123456789012",
+    "region": "us-east-1",
+    "service": "EC2",
+    "current_utilization_percentage": 42.5,
+    "target_utilization_percentage": 85.0,
+    "commitment_start_date": "2023-02-01",
+    "commitment_end_date": "2026-01-31",
+    "days_until_expiry": 730,
+    "commitment_amount": 15000.00,
+    "utilized_amount": 6375.00,
+    "wasted_amount": 8625.00,
+    "potential_savings": 8625.00,
+    "currency": "USD",
+    "recommendation_id": "850e8400-e29b-41d4-a716-446655440009"
+  },
+  "metadata": {
+    "priority": "high",
+    "tags": {
+      "commitment_health": "poor",
+      "requires_action": "true"
+    }
+  }
+}

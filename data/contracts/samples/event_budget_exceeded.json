@@ -1,0 +1,38 @@
+{
+  "event_id": "950e8400-e29b-41d4-a716-446655440005",
+  "event_type": "budget.threshold_exceeded",
+  "event_version": "1.0.0",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "correlation_id": "corr-2024-02-01-budget-alert",
+  "timestamp": "2024-02-01T14:30:00Z",
+  "source": {
+    "service": "budgets-alerts-service",
+    "instance": "pod-budgets-abc123",
+    "version": "2.1.0"
+  },
+  "payload": {
+    "budget_id": "budget-eng-monthly",
+    "budget_name": "Engineering Monthly Budget",
+    "period": "monthly",
+    "threshold_type": "percentage",
+    "threshold_value": 90.0,
+    "threshold_percentage": 90,
+    "current_spend": 45600.00,
+    "budget_amount": 50000.00,
+    "forecasted_spend": 52000.00,
+    "currency": "USD",
+    "period_start": "2024-02-01",
+    "period_end": "2024-02-29",
+    "scope": {
+      "type": "tag",
+      "value": "CostCenter:engineering"
+    }
+  },
+  "metadata": {
+    "priority": "high",
+    "tags": {
+      "department": "engineering",
+      "alert_type": "budget"
+    }
+  }
+}

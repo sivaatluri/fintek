@@ -1,0 +1,65 @@
+{
+  "recommendation_id": "850e8400-e29b-41d4-a716-446655440004",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "recommendation_type": "rightsizing",
+  "category": "usage_optimization",
+  "priority": "high",
+  "status": "open",
+  "provider": "aws",
+  "account_id": "123456789012",
+  "region": "us-east-1",
+  "resource_id": "i-0987654321fedcba0",
+  "resource_name": "db-cache-server",
+  "resource_type": "ec2-instance",
+  "current_configuration": {
+    "instance_type": "m5.2xlarge",
+    "vcpus": 8,
+    "memory_gb": 32,
+    "avg_cpu_utilization": 12.5,
+    "avg_memory_utilization": 18.3
+  },
+  "recommended_configuration": {
+    "instance_type": "m5.large",
+    "vcpus": 2,
+    "memory_gb": 8,
+    "expected_cpu_utilization": 45.0,
+    "expected_memory_utilization": 68.0
+  },
+  "estimated_monthly_savings": 245.52,
+  "estimated_annual_savings": 2946.24,
+  "currency": "USD",
+  "confidence_level": "high",
+  "implementation_effort": "low",
+  "implementation_risk": "low",
+  "description": "This m5.2xlarge instance is significantly underutilized with average CPU at 12.5% and memory at 18.3%. Downsizing to m5.large would provide adequate resources while reducing costs.",
+  "rationale": "Based on 30-day analysis, peak CPU usage never exceeded 25% and peak memory usage was 32%. The recommended m5.large instance provides sufficient headroom.",
+  "action_steps": [
+    "Create AMI backup of current instance",
+    "Schedule maintenance window",
+    "Stop instance",
+    "Change instance type to m5.large",
+    "Start instance and verify application functionality",
+    "Monitor for 7 days to ensure performance is acceptable"
+  ],
+  "tags": {
+    "Environment": "production",
+    "Application": "cache-layer"
+  },
+  "analysis_period": {
+    "start_date": "2024-01-01",
+    "end_date": "2024-01-31",
+    "days_analyzed": 31
+  },
+  "created_at": "2024-02-01T10:00:00Z",
+  "updated_at": "2024-02-01T10:00:00Z",
+  "expires_at": "2024-03-01T10:00:00Z",
+  "source": "platform",
+  "metadata": {
+    "detection_algorithm": "statistical_analysis",
+    "confidence_factors": {
+      "consistent_pattern": true,
+      "sufficient_data_points": true,
+      "no_traffic_spikes": true
+    }
+  }
+}
