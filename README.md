@@ -122,12 +122,26 @@ make validate-workflows
 ### Database Management
 
 ```bash
-# Initialize database with migrations
+# Run database migrations
+make db-migrate
+
+# Initialize database (alias for db-migrate)
 make init-db
 
 # Seed database with demo data
 make seed-db
+
+# Check current migration status
+./scripts/run_migrations.sh current
+
+# View migration history
+./scripts/run_migrations.sh history
+
+# See all migration commands
+./scripts/run_migrations.sh help
 ```
+
+For detailed migration documentation, see [Database Migrations Guide](docs/DATABASE_MIGRATIONS.md).
 
 ### Cleanup
 
@@ -174,6 +188,11 @@ finops-saas/
 │   │   ├── samples/        # Sample payloads
 │   │   └── README.md       # Schema documentation
 │   └── db/                 # Database migrations
+│       └── alembic/        # Alembic migrations (22 tables)
+│           ├── versions/   # Migration scripts (6 files)
+│           ├── alembic.ini # Alembic configuration
+│           ├── env.py      # Migration environment
+│           └── README.md   # Migration documentation
 ├── docs/                   # Documentation
 │   ├── architecture/
 │   ├── runbooks/
@@ -289,6 +308,72 @@ npm run test:verbose
 **Test Coverage**: 10/10 schemas validated with sample data ✅
 
 For detailed schema documentation, see [data/contracts/README.md](data/contracts/README.md).
+
+## 🗄️ Database Schema & Migrations
+
+The platform uses PostgreSQL with Alembic for schema version control. All schema changes are managed through migrations.
+
+### Database Tables (22 total)
+
+**Identity & Auth (8 tables)**
+- organizations, users, user_organizations
+- roles, permissions, user_roles, role_permissions
+- sessions (OIDC/SAML token management)
+
+**Tenant Management (2 tables)**
+- tenants, cloud_accounts (AWS, Azure, GCP, Oracle, Akamai, Datacenter)
+
+**Configuration (2 tables)**
+- persona_views, audit_logs
+
+**Cost Management (2 tables)**
+- budgets, anomalies
+
+**Workflow Automation (4 tables)**
+- workflow_definitions, workflow_executions, workflow_steps, workflow_external_refs
+
+**Integrations (2 tables)**
+- integrations, integration_deliveries
+
+### Quick Start
+
+```bash
+# 1. Start PostgreSQL
+make dev-up
+
+# 2. Run all migrations
+make db-migrate
+
+# 3. Verify schema
+./scripts/run_migrations.sh current
+
+# 4. Seed demo data
+make seed-db
+```
+
+### Migration Commands
+
+```bash
+# Upgrade to latest
+make db-migrate
+
+# Check current revision
+./scripts/run_migrations.sh current
+
+# View migration history
+./scripts/run_migrations.sh history
+
+# Downgrade one revision
+./scripts/run_migrations.sh downgrade -1
+
+# Create new migration
+./scripts/run_migrations.sh revision "description"
+
+# See all commands
+./scripts/run_migrations.sh help
+```
+
+For comprehensive migration documentation, see [Database Migrations Guide](docs/DATABASE_MIGRATIONS.md).
 
 ## 🧪 Testing
 
