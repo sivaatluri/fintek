@@ -4,7 +4,7 @@
 # ============================================================================
 
 .PHONY: help dev-up dev-down dev-restart logs logs-follow clean clean-volumes \
-        lint test fmt check status ps init-db seed-db validate-workflows \
+        lint test fmt check status ps init-db db-migrate seed-db validate-workflows \
         bootstrap dev-tools-up dev-tools-down tools-logs
 
 .DEFAULT_GOAL := help
@@ -164,12 +164,15 @@ validate-workflows: ## Validate workflow YAML files
 # DATABASE
 # ============================================================================
 
-init-db: ## Initialize database with schema migrations
-	@echo "$(GREEN)Initializing database...$(NC)"
+init-db: db-migrate ## Initialize database with schema migrations (alias for db-migrate)
+
+db-migrate: ## Run database migrations
+	@echo "$(GREEN)Running database migrations...$(NC)"
 	@if [ -f scripts/run_migrations.sh ]; then \
-		bash scripts/run_migrations.sh; \
+		bash scripts/run_migrations.sh upgrade; \
 	else \
-		echo "$(YELLOW)No migration script found - create scripts/run_migrations.sh$(NC)"; \
+		echo "$(RED)Error: scripts/run_migrations.sh not found$(NC)"; \
+		exit 1; \
 	fi
 
 seed-db: ## Seed database with demo data
