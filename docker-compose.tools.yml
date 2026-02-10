@@ -1,5 +1,3 @@
-version: '3.9'
-
 # ============================================================================
 # FinOps SaaS - Development Tools
 # Observability, monitoring, auth, and testing tools
@@ -31,8 +29,6 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
     ports:
       - "${KEYCLOAK_PORT:-8081}:8081"
-    depends_on:
-      - postgres
     networks:
       - finops-network
     healthcheck:
@@ -76,11 +72,6 @@ services:
       - "${OTEL_COLLECTOR_HEALTH_CHECK_PORT:-13133}:13133" # Health check
     networks:
       - finops-network
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:13133"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   # ==========================================================================
   # PROMETHEUS - Metrics Collection & Storage
@@ -118,7 +109,6 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
-      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
       GF_SERVER_ROOT_URL: http://localhost:3000
       GF_AUTH_ANONYMOUS_ENABLED: true
       GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
