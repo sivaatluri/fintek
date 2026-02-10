@@ -162,10 +162,12 @@ finops-saas/
 │   ├── workflows-service/  # Workflow automation
 │   └── ...                 # 19 total services
 ├── packages/               # Shared libraries
-│   ├── common/
-│   ├── cloud-adapters/     # Cloud provider abstractions
-│   ├── workflow-dsl/       # Workflow DSL and runtime
-│   └── ...
+│   ├── common/            # Errors, request context, org/tenant IDs
+│   ├── config/            # Environment configuration with validation
+│   ├── telemetry/         # OpenTelemetry logging and tracing
+│   ├── policy-engine/     # RBAC/ABAC authorization
+│   ├── event-bus/         # Kafka producer/consumer with retry + DLQ
+│   └── workflow-dsl/      # Workflow DSL and runtime
 ├── data/
 │   ├── contracts/          # Data schemas (JSON Schema)
 │   │   ├── *.schema.json   # 7 canonical schemas
@@ -367,3 +369,44 @@ For issues and questions:
 - Open an issue on GitHub
 - Check existing documentation in `docs/`
 - Review runbooks in `docs/runbooks/`
+
+## 📦 Shared Packages
+
+The platform includes shared TypeScript libraries used across all microservices:
+
+### [@finops/common](./packages/common)
+Core utilities for error handling and request context management.
+- 8 custom error classes with HTTP status codes
+- AsyncLocalStorage-based request context
+- Request/org/tenant/user ID tracking
+- Express middleware
+
+### [@finops/config](./packages/config)
+Environment configuration with type-safe validation.
+- Zod-based schema validation
+- Type-safe configuration access
+- Support for database, Redis, Kafka, auth, CORS, rate limiting
+
+### [@finops/telemetry](./packages/telemetry)
+OpenTelemetry integration for logging and distributed tracing.
+- OpenTelemetry SDK initialization
+- Pino logger with trace context injection
+- Tracing helpers and decorators
+- Automatic instrumentation
+
+### [@finops/policy-engine](./packages/policy-engine)
+RBAC/ABAC authorization and policy evaluation.
+- 7 roles, 27 granular permissions
+- Policy evaluation engine
+- Express middleware and decorators
+- Organization and resource ownership checks
+
+### [@finops/event-bus](./packages/event-bus)
+Kafka producer/consumer with retry logic and DLQ pattern.
+- Producer with exponential backoff retry
+- Consumer with message handlers
+- Dead Letter Queue (DLQ) for failed messages
+- Batch message support
+
+See [packages/README.md](./packages/README.md) for detailed documentation.
+
