@@ -106,6 +106,9 @@ make lint
 # Run tests
 make test
 
+# Run contract tests (validate data schemas)
+cd tests/contract-tests && npm install && npm test
+
 # Format code
 make fmt
 
@@ -164,7 +167,10 @@ finops-saas/
 │   ├── workflow-dsl/       # Workflow DSL and runtime
 │   └── ...
 ├── data/
-│   ├── contracts/          # Data schemas
+│   ├── contracts/          # Data schemas (JSON Schema)
+│   │   ├── *.schema.json   # 7 canonical schemas
+│   │   ├── samples/        # Sample payloads
+│   │   └── README.md       # Schema documentation
 │   └── db/                 # Database migrations
 ├── docs/                   # Documentation
 │   ├── architecture/
@@ -181,6 +187,7 @@ finops-saas/
 │   └── otel-collector/
 ├── scripts/                # Automation scripts
 ├── tests/                  # Test suites
+│   └── contract-tests/     # Data contract validation
 ├── docker-compose.dev.yml  # Development services
 ├── docker-compose.tools.yml # Development tools
 ├── Makefile                # Development automation
@@ -248,6 +255,38 @@ This platform follows a cloud-agnostic, microservices architecture:
    - FinOps team workspace
    - Engineering cost attribution
    - Product operations unit economics
+
+## 📋 Data Contracts
+
+The platform uses strongly-typed data contracts (JSON schemas) to ensure consistency across services:
+
+### Available Schemas
+
+1. **raw_cost.schema.json** - Raw cloud billing data before normalization
+2. **normalized_cost.schema.json** - Canonical cost schema (provider-agnostic)
+3. **allocated_cost.schema.json** - Cost allocation with unit economics
+4. **recommendation.schema.json** - Cost optimization recommendations
+5. **event.schema.json** - Event envelope with typed payloads (budgets, anomalies, waste, commitments)
+6. **workflow_execution.schema.json** - Workflow execution state tracking
+7. **integration_delivery.schema.json** - External integration delivery tracking
+
+### Contract Testing
+
+All schemas include sample payloads and automated validation:
+
+```bash
+# Run contract tests
+cd tests/contract-tests
+npm install
+npm test
+
+# View detailed validation errors
+npm run test:verbose
+```
+
+**Test Coverage**: 10/10 schemas validated with sample data ✅
+
+For detailed schema documentation, see [data/contracts/README.md](data/contracts/README.md).
 
 ## 🧪 Testing
 
