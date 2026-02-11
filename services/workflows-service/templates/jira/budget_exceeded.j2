@@ -1,0 +1,13 @@
+**Budget Alert**: {{ event.payload.budget_name }}
+
+*Organization:* {{ org_id }}
+*Budget:* {{ event.payload.budget_name }}
+*Current Spend:* ${{ "%.2f"|format(event.payload.current_spend) }}
+*Budget Amount:* ${{ "%.2f"|format(event.payload.budget_amount) }}
+*Threshold:* {{ event.payload.threshold_percentage }}%
+
+*Period:* {{ event.payload.period_start }} to {{ event.payload.period_end }}
+
+---
+*Event ID:* {{ event.event_id }}
+*Triggered:* {{ event.timestamp }}

@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/raw_cost.schema.json",
+  "title": "Raw Cost Record",
+  "description": "Schema for raw cloud billing data ingested from various cloud providers before normalization",
+  "type": "object",
+  "required": [
+    "record_id",
+    "tenant_id",
+    "provider",
+    "billing_period_start",
+    "billing_period_end",
+    "ingested_at",
+    "raw_data"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this raw cost record"
+    },
+    "tenant_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Tenant identifier for multi-tenancy"
+    },
+    "provider": {
+      "type": "string",
+      "enum": ["aws", "azure", "gcp", "oracle", "akamai", "datacenter"],
+      "description": "Cloud provider source"
+    },
+    "account_id": {
+      "type": "string",
+      "description": "Provider-specific account/subscription identifier"
+    },
+    "billing_period_start": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Start of the billing period"
+    },
+    "billing_period_end": {
+      "type": "string",
+      "format": "date-time",
+      "description": "End of the billing period"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the record was ingested"
+    },
+    "source_file": {
+      "type": "string",
+      "description": "Source file or API endpoint"
+    },
+    "source_line_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Line number in source file (if applicable)"
+    },
+    "raw_data": {
+      "type": "object",
+      "description": "Provider-specific raw billing data as key-value pairs",
+      "additionalProperties": true
+    },
+    "checksum": {
+      "type": "string",
+      "description": "MD5/SHA256 checksum of raw data for deduplication"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about ingestion",
+      "properties": {
+        "connector_version": {
+          "type": "string"
+        },
+        "ingestion_job_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "data_quality_flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

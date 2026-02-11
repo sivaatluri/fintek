@@ -1,0 +1,35 @@
+{
+  "event_id": "b50e8400-e29b-41d4-a716-446655440007",
+  "event_type": "waste.idle_resource_detected",
+  "event_version": "1.0.0",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "timestamp": "2024-02-01T16:00:00Z",
+  "source": {
+    "service": "recommendations-service",
+    "instance": "pod-waste-detector-456def",
+    "version": "1.5.2"
+  },
+  "payload": {
+    "resource_id": "vol-0123456789abcdef0",
+    "resource_name": "unused-volume-dev",
+    "resource_type": "ebs-volume",
+    "waste_type": "unattached",
+    "provider": "aws",
+    "account_id": "123456789012",
+    "region": "eu-west-1",
+    "estimated_monthly_waste": 24.00,
+    "estimated_annual_waste": 288.00,
+    "currency": "USD",
+    "utilization_metrics": {},
+    "detection_period_days": 30,
+    "last_active": "2023-12-15T10:00:00Z",
+    "recommendation_id": "550e8400-e29b-41d4-a716-446655440094"
+  },
+  "metadata": {
+    "priority": "medium",
+    "tags": {
+      "waste_category": "storage",
+      "action_recommended": "delete"
+    }
+  }
+}

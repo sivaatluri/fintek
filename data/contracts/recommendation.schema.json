@@ -1,0 +1,206 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/recommendation.schema.json",
+  "title": "Cost Optimization Recommendation",
+  "description": "Schema for cost savings and optimization recommendations",
+  "type": "object",
+  "required": [
+    "recommendation_id",
+    "tenant_id",
+    "recommendation_type",
+    "category",
+    "priority",
+    "status",
+    "resource_id",
+    "estimated_monthly_savings",
+    "currency",
+    "created_at"
+  ],
+  "properties": {
+    "recommendation_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this recommendation"
+    },
+    "tenant_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Tenant identifier"
+    },
+    "recommendation_type": {
+      "type": "string",
+      "enum": [
+        "rightsizing",
+        "idle_resource",
+        "reserved_instance",
+        "savings_plan",
+        "spot_instance",
+        "storage_optimization",
+        "data_transfer_optimization",
+        "commitment_utilization",
+        "architecture_optimization",
+        "license_optimization"
+      ],
+      "description": "Type of recommendation"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["waste", "commitment", "rate_optimization", "usage_optimization"],
+      "description": "High-level category"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"],
+      "description": "Priority level based on potential savings and effort"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["open", "in_progress", "accepted", "rejected", "completed", "expired"],
+      "description": "Current status of the recommendation"
+    },
+    "provider": {
+      "type": "string",
+      "enum": ["aws", "azure", "gcp", "oracle", "akamai", "datacenter"],
+      "description": "Cloud provider"
+    },
+    "account_id": {
+      "type": "string",
+      "description": "Provider account ID"
+    },
+    "region": {
+      "type": "string",
+      "description": "Cloud region"
+    },
+    "resource_id": {
+      "type": "string",
+      "description": "Identifier of the resource"
+    },
+    "resource_name": {
+      "type": "string",
+      "description": "Human-readable resource name"
+    },
+    "resource_type": {
+      "type": "string",
+      "description": "Type of resource"
+    },
+    "current_configuration": {
+      "type": "object",
+      "description": "Current resource configuration",
+      "additionalProperties": true
+    },
+    "recommended_configuration": {
+      "type": "object",
+      "description": "Recommended configuration changes",
+      "additionalProperties": true
+    },
+    "estimated_monthly_savings": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated monthly savings in currency units"
+    },
+    "estimated_annual_savings": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated annual savings"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 currency code"
+    },
+    "confidence_level": {
+      "type": "string",
+      "enum": ["very_high", "high", "medium", "low"],
+      "description": "Confidence in the savings estimate"
+    },
+    "implementation_effort": {
+      "type": "string",
+      "enum": ["very_low", "low", "medium", "high", "very_high"],
+      "description": "Estimated effort to implement"
+    },
+    "implementation_risk": {
+      "type": "string",
+      "enum": ["very_low", "low", "medium", "high", "very_high"],
+      "description": "Risk level of implementing this change"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the recommendation"
+    },
+    "rationale": {
+      "type": "string",
+      "description": "Explanation of why this recommendation is made"
+    },
+    "action_steps": {
+      "type": "array",
+      "description": "Steps to implement the recommendation",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "description": "Tags associated with the resource",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "analysis_period": {
+      "type": "object",
+      "description": "Time period used for analysis",
+      "properties": {
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "days_analyzed": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the recommendation was created"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the recommendation was last updated"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the recommendation expires"
+    },
+    "implemented_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the recommendation was implemented"
+    },
+    "implemented_by": {
+      "type": "string",
+      "description": "User who implemented the recommendation"
+    },
+    "rejection_reason": {
+      "type": "string",
+      "description": "Reason for rejection if status is 'rejected'"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["platform", "aws_trusted_advisor", "azure_advisor", "gcp_recommender", "custom"],
+      "description": "Source of the recommendation"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

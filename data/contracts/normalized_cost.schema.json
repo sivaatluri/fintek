@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/normalized_cost.schema.json",
+  "title": "Normalized Cost Record",
+  "description": "Canonical cost schema after normalization across all cloud providers",
+  "type": "object",
+  "required": [
+    "cost_id",
+    "tenant_id",
+    "provider",
+    "account_id",
+    "usage_date",
+    "usage_start_time",
+    "usage_end_time",
+    "resource_id",
+    "service_category",
+    "service_name",
+    "usage_type",
+    "usage_amount",
+    "usage_unit",
+    "cost",
+    "currency"
+  ],
+  "properties": {
+    "cost_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this normalized cost record"
+    },
+    "tenant_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Tenant identifier"
+    },
+    "raw_record_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to the original raw cost record"
+    },
+    "provider": {
+      "type": "string",
+      "enum": ["aws", "azure", "gcp", "oracle", "akamai", "datacenter"],
+      "description": "Cloud provider"
+    },
+    "account_id": {
+      "type": "string",
+      "description": "Provider account/subscription ID"
+    },
+    "account_name": {
+      "type": "string",
+      "description": "Human-readable account name"
+    },
+    "usage_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of usage (YYYY-MM-DD)"
+    },
+    "usage_start_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Start timestamp of usage period"
+    },
+    "usage_end_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "End timestamp of usage period"
+    },
+    "resource_id": {
+      "type": "string",
+      "description": "Unique resource identifier (ARN, Resource ID, etc.)"
+    },
+    "resource_name": {
+      "type": "string",
+      "description": "Human-readable resource name"
+    },
+    "resource_type": {
+      "type": "string",
+      "description": "Type of resource (e.g., instance, bucket, database)"
+    },
+    "region": {
+      "type": "string",
+      "description": "Cloud region (normalized format)"
+    },
+    "availability_zone": {
+      "type": "string",
+      "description": "Availability zone within region"
+    },
+    "service_category": {
+      "type": "string",
+      "enum": [
+        "compute",
+        "storage",
+        "database",
+        "networking",
+        "analytics",
+        "ml_ai",
+        "security",
+        "management",
+        "other"
+      ],
+      "description": "Normalized service category"
+    },
+    "service_name": {
+      "type": "string",
+      "description": "Normalized service name (e.g., 'Virtual Machines', 'Object Storage')"
+    },
+    "usage_type": {
+      "type": "string",
+      "description": "Type of usage (e.g., 'compute-hours', 'data-transfer-gb')"
+    },
+    "usage_amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Quantity of usage"
+    },
+    "usage_unit": {
+      "type": "string",
+      "description": "Unit of measurement (hours, GB, requests, etc.)"
+    },
+    "cost": {
+      "type": "number",
+      "description": "Cost amount (can be negative for credits)"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 currency code (e.g., USD, EUR)"
+    },
+    "pricing_model": {
+      "type": "string",
+      "enum": ["on_demand", "reserved", "spot", "savings_plan", "committed_use", "custom"],
+      "description": "Pricing model used"
+    },
+    "tags": {
+      "type": "object",
+      "description": "Native cloud provider tags",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "virtual_tags": {
+      "type": "object",
+      "description": "Platform-applied virtual tags",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "normalized_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when normalization occurred"
+    },
+    "data_quality": {
+      "type": "object",
+      "properties": {
+        "completeness_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Score 0-1 indicating data completeness"
+        },
+        "quality_flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Any quality issues detected"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

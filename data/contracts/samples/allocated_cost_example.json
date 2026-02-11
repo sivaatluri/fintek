@@ -1,0 +1,45 @@
+{
+  "allocation_id": "750e8400-e29b-41d4-a716-446655440003",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "cost_id": "650e8400-e29b-41d4-a716-446655440002",
+  "allocation_date": "2024-01-15",
+  "allocation_method": "proportional_usage",
+  "allocation_basis": "cpu_hours",
+  "allocated_cost": 0.0416,
+  "currency": "USD",
+  "allocation_targets": [
+    {
+      "target_type": "team",
+      "target_id": "team-platform",
+      "target_name": "Platform Team",
+      "allocation_percentage": 60.0,
+      "allocated_amount": 0.02496
+    },
+    {
+      "target_type": "team",
+      "target_id": "team-api",
+      "target_name": "API Team",
+      "allocation_percentage": 40.0,
+      "allocated_amount": 0.01664
+    }
+  ],
+  "unit_economics": {
+    "unit_type": "api_request",
+    "unit_count": 1500000,
+    "cost_per_unit": 0.00002773,
+    "revenue_per_unit": 0.00010000,
+    "margin_per_unit": 0.00007227
+  },
+  "chargeback_info": {
+    "mode": "showback",
+    "billing_cycle": "monthly",
+    "status": "approved"
+  },
+  "allocation_rules_applied": [
+    "550e8400-e29b-41d4-a716-446655440098"
+  ],
+  "allocated_at": "2024-02-01T09:00:00Z",
+  "metadata": {
+    "notes": "Allocated based on API gateway usage metrics"
+  }
+}

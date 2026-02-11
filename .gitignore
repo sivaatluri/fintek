@@ -1,0 +1,47 @@
+# ============================================================================
+# FinOps SaaS - Git Ignore
+# ============================================================================
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Docker volumes and data
+docker-volumes/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+*.egg-info/
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak

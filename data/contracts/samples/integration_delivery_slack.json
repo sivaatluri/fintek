@@ -1,0 +1,55 @@
+{
+  "delivery_id": "e50e8400-e29b-41d4-a716-446655440011",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "workflow_execution_id": "d50e8400-e29b-41d4-a716-446655440010",
+  "event_id": "950e8400-e29b-41d4-a716-446655440005",
+  "integration_type": "slack",
+  "integration_id": "550e8400-e29b-41d4-a716-446655440087",
+  "integration_name": "Budget Alerts Slack Channel",
+  "status": "delivered",
+  "delivery_method": "asynchronous",
+  "payload": {
+    "template_id": "slack-budget-alert-v1",
+    "template_version": "1.0.0",
+    "data": {
+      "budget_name": "Engineering Monthly Budget",
+      "current_spend": 45600.00,
+      "budget_amount": 50000.00,
+      "percentage": 91.2,
+      "currency": "USD",
+      "period": "February 2024",
+      "alert_level": "warning"
+    },
+    "rendered_content": {
+      "body": "⚠️ *Budget Alert: Engineering Monthly Budget*\n\nYour budget has exceeded 90% of the allocated amount.\n\n💰 *Current Spend:* $45,600.00\n📊 *Budget Amount:* $50,000.00\n📈 *Percentage Used:* 91.2%\n📅 *Period:* February 2024\n\n🔗 <https://finops.example.com/budgets/eng-monthly|View Budget Details>",
+      "attachments": []
+    }
+  },
+  "destination": {
+    "slack_channel": "#budget-alerts"
+  },
+  "response": {
+    "status_code": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": "{\"ok\":true,\"channel\":\"C01234567\",\"ts\":\"1706797810.123456\"}",
+    "external_id": "1706797810.123456",
+    "external_url": "https://acmecorp.slack.com/archives/C01234567/p1706797810123456"
+  },
+  "created_at": "2024-02-01T14:30:08Z",
+  "sent_at": "2024-02-01T14:30:09Z",
+  "delivered_at": "2024-02-01T14:30:10Z",
+  "duration_ms": 2000,
+  "retry_count": 0,
+  "max_retries": 3,
+  "idempotency_key": "slack-delivery-950e8400-20240201",
+  "priority": "high",
+  "metadata": {
+    "tags": {
+      "notification_type": "budget_alert",
+      "channel_type": "slack"
+    },
+    "user_agent": "FinOps-Platform/2.1.0"
+  }
+}

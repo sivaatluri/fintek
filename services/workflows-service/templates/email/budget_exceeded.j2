@@ -1,0 +1,17 @@
+Subject: Budget Alert - {{ event.payload.budget_name }}
+
+Hello,
+
+Your budget "{{ event.payload.budget_name }}" has exceeded its threshold.
+
+Current Spend: ${{ "%.2f"|format(event.payload.current_spend) }}
+Budget Amount: ${{ "%.2f"|format(event.payload.budget_amount) }}
+Threshold: {{ event.payload.threshold_percentage }}%
+
+Period: {{ event.payload.period_start }} to {{ event.payload.period_end }}
+
+Please review your spending and take appropriate action.
+
+---
+Event ID: {{ event.event_id }}
+Timestamp: {{ event.timestamp }}

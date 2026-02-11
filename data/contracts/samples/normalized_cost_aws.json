@@ -1,0 +1,39 @@
+{
+  "cost_id": "650e8400-e29b-41d4-a716-446655440002",
+  "tenant_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "raw_record_id": "550e8400-e29b-41d4-a716-446655440001",
+  "provider": "aws",
+  "account_id": "123456789012",
+  "account_name": "Production Account",
+  "usage_date": "2024-01-15",
+  "usage_start_time": "2024-01-15T10:00:00Z",
+  "usage_end_time": "2024-01-15T11:00:00Z",
+  "resource_id": "arn:aws:ec2:us-east-1:123456789012:instance/i-0123456789abcdef0",
+  "resource_name": "web-server-prod-01",
+  "resource_type": "ec2-instance",
+  "region": "us-east-1",
+  "availability_zone": "us-east-1a",
+  "service_category": "compute",
+  "service_name": "Virtual Machines",
+  "usage_type": "compute-hours",
+  "usage_amount": 1.0,
+  "usage_unit": "hours",
+  "cost": 0.0416,
+  "currency": "USD",
+  "pricing_model": "on_demand",
+  "tags": {
+    "Environment": "production",
+    "Team": "platform",
+    "CostCenter": "engineering"
+  },
+  "virtual_tags": {
+    "BusinessUnit": "Core Platform",
+    "Application": "Web Application",
+    "Owner": "platform-team@example.com"
+  },
+  "normalized_at": "2024-02-01T08:35:00Z",
+  "data_quality": {
+    "completeness_score": 0.98,
+    "quality_flags": []
+  }
+}

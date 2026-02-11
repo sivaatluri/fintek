@@ -1,0 +1,403 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://finops.example.com/schemas/event.schema.json",
+  "title": "Event Schema",
+  "description": "Envelope schema for all platform events with typed payload variants",
+  "type": "object",
+  "required": [
+    "event_id",
+    "event_type",
+    "event_version",
+    "tenant_id",
+    "timestamp",
+    "source",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for this event"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "budget.threshold_exceeded",
+        "budget.threshold_warning",
+        "budget.forecast_exceeded",
+        "anomaly.cost_spike",
+        "anomaly.usage_spike",
+        "anomaly.cost_drop",
+        "waste.idle_resource_detected",
+        "waste.underutilized_resource",
+        "waste.zombie_resource",
+        "commitment.utilization_low",
+        "commitment.expiring_soon",
+        "commitment.renewal_recommended",
+        "commitment.coverage_gap"
+      ],
+      "description": "Type of event"
+    },
+    "event_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of event schema (e.g., '1.0.0')"
+    },
+    "tenant_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Tenant identifier"
+    },
+    "correlation_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Correlation ID for tracing related events"
+    },
+    "causation_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "ID of the event that caused this event"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event occurrence timestamp (ISO 8601)"
+    },
+    "source": {
+      "type": "object",
+      "required": ["service", "instance"],
+      "properties": {
+        "service": {
+          "type": "string",
+          "description": "Service that emitted the event"
+        },
+        "instance": {
+          "type": "string",
+          "description": "Service instance identifier"
+        },
+        "version": {
+          "type": "string",
+          "description": "Service version"
+        }
+      }
+    },
+    "payload": {
+      "type": "object",
+      "description": "Event-specific payload data (see payload schemas below)",
+      "oneOf": [
+        { "$ref": "#/definitions/budgetPayload" },
+        { "$ref": "#/definitions/anomalyPayload" },
+        { "$ref": "#/definitions/wastePayload" },
+        { "$ref": "#/definitions/commitmentPayload" }
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional event metadata",
+      "properties": {
+        "priority": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"]
+        },
+        "tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "budgetPayload": {
+      "type": "object",
+      "required": ["budget_id", "budget_name", "period", "threshold_type", "threshold_value", "current_spend"],
+      "properties": {
+        "budget_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "budget_name": {
+          "type": "string"
+        },
+        "period": {
+          "type": "string",
+          "enum": ["daily", "weekly", "monthly", "quarterly", "annual"]
+        },
+        "threshold_type": {
+          "type": "string",
+          "enum": ["absolute", "percentage", "forecast"]
+        },
+        "threshold_value": {
+          "type": "number"
+        },
+        "threshold_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "current_spend": {
+          "type": "number"
+        },
+        "budget_amount": {
+          "type": "number"
+        },
+        "forecasted_spend": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "period_start": {
+          "type": "string",
+          "format": "date"
+        },
+        "period_end": {
+          "type": "string",
+          "format": "date"
+        },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["account", "project", "tag", "service", "region"]
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "anomalyPayload": {
+      "type": "object",
+      "required": ["anomaly_id", "anomaly_type", "severity", "detected_at", "current_value", "expected_value"],
+      "properties": {
+        "anomaly_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "anomaly_type": {
+          "type": "string",
+          "enum": ["cost_spike", "usage_spike", "cost_drop", "pattern_change"]
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["critical", "high", "medium", "low"]
+        },
+        "detected_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "detection_method": {
+          "type": "string",
+          "enum": ["statistical", "machine_learning", "threshold", "pattern"]
+        },
+        "confidence_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "current_value": {
+          "type": "number"
+        },
+        "expected_value": {
+          "type": "number"
+        },
+        "deviation_percentage": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "resource_id": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "time_window": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "historical_baseline": {
+          "type": "object",
+          "properties": {
+            "mean": {
+              "type": "number"
+            },
+            "median": {
+              "type": "number"
+            },
+            "std_dev": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "wastePayload": {
+      "type": "object",
+      "required": ["resource_id", "resource_type", "waste_type", "estimated_monthly_waste"],
+      "properties": {
+        "resource_id": {
+          "type": "string"
+        },
+        "resource_name": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "waste_type": {
+          "type": "string",
+          "enum": ["idle", "underutilized", "zombie", "oversized", "unattached"]
+        },
+        "provider": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "estimated_monthly_waste": {
+          "type": "number",
+          "minimum": 0
+        },
+        "estimated_annual_waste": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "utilization_metrics": {
+          "type": "object",
+          "properties": {
+            "cpu_utilization_avg": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "memory_utilization_avg": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "network_utilization_avg": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        },
+        "detection_period_days": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "last_active": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "recommendation_id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    },
+    "commitmentPayload": {
+      "type": "object",
+      "required": ["commitment_id", "commitment_type", "issue_type"],
+      "properties": {
+        "commitment_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "commitment_type": {
+          "type": "string",
+          "enum": ["reserved_instance", "savings_plan", "committed_use_discount"]
+        },
+        "issue_type": {
+          "type": "string",
+          "enum": ["low_utilization", "expiring_soon", "renewal_recommended", "coverage_gap"]
+        },
+        "provider": {
+          "type": "string"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "current_utilization_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "target_utilization_percentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "commitment_start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "commitment_end_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "days_until_expiry": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "commitment_amount": {
+          "type": "number"
+        },
+        "utilized_amount": {
+          "type": "number"
+        },
+        "wasted_amount": {
+          "type": "number"
+        },
+        "potential_savings": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "recommendation_id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

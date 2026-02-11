@@ -1,0 +1,16 @@
+{
+  "name": "finops-contract-tests",
+  "version": "1.0.0",
+  "description": "Contract tests for FinOps data schemas",
+  "scripts": {
+    "test": "node validate-contracts.js",
+    "test:verbose": "node validate-contracts.js --verbose"
+  },
+  "keywords": ["finops", "contract-testing", "json-schema"],
+  "author": "FinOps Platform Team",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1"
+  }
+}
