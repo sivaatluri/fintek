@@ -1,0 +1,11 @@
+Budget threshold exceeded for {{ event.payload.budget_name }}
+
+Current spend: ${{ "%.2f"|format(event.payload.current_spend) }}
+Budget amount: ${{ "%.2f"|format(event.payload.budget_amount) }}
+Threshold: {{ event.payload.threshold_percentage }}%
+
+Period: {{ event.payload.period_start }} to {{ event.payload.period_end }}
+
+Action required: Review spend and adjust budget or resources.
+
+Event ID: {{ event.event_id }}

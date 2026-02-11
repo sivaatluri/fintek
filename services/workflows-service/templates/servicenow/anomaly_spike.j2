@@ -1,0 +1,15 @@
+{{ event.payload.severity|upper }} - Cost anomaly detected
+
+Anomaly type: {{ event.payload.anomaly_type }}
+Confidence: {{ "%.0f"|format(event.payload.confidence_score * 100) }}%
+
+Current value: ${{ "%.2f"|format(event.payload.current_value) }}
+Expected value: ${{ "%.2f"|format(event.payload.expected_value) }}
+Deviation: {{ "%.1f"|format(event.payload.deviation_percentage) }}%
+
+{% if event.payload.resource_id %}Resource: {{ event.payload.resource_id }}
+{% endif %}{% if event.payload.service %}Service: {{ event.payload.service }}
+{% endif %}{% if event.payload.region %}Region: {{ event.payload.region }}
+{% endif %}
+Detected at: {{ event.payload.detected_at }}
+Event ID: {{ event.event_id }}

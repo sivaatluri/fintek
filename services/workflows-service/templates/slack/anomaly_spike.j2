@@ -1,0 +1,8 @@
+⚠️ *{{ event.payload.severity|upper }}* Cost Anomaly
+
+*Type:* {{ event.payload.anomaly_type }}
+*Confidence:* {{ "%.0f"|format(event.payload.confidence_score * 100) }}%
+
+💰 *Current:* ${{ "%.2f"|format(event.payload.current_value) }}
+📊 *Expected:* ${{ "%.2f"|format(event.payload.expected_value) }}
+📈 *Deviation:* {{ "%.1f"|format(event.payload.deviation_percentage) }}%
